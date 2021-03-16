@@ -1,21 +1,22 @@
 import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class HashingPoetry {
-    public static void main(String[] args) {
-//        WritePoetry poem = new WritePoetry();
+    public static void main(String[] args) throws IOException {
+        WritePoetry poem = new WritePoetry();
 
-//        System.out.println("--- Sam ---");
-//        System.out.println(poem.writePoem("green.txt", "sam", 30, false));
-//        System.out.println();
+        System.out.println("--- Sam ---");
+        System.out.println(poem.writePoem("green.txt", "sam", 30, false));
+        System.out.println();
 
-//        System.out.println("--- Lester ---");
-//        System.out.println(poem.writePoem("lester.txt", "lester", 30, false));
-//        System.out.println();
+        System.out.println("--- Lester ---");
+        System.out.println(poem.writePoem("lester.txt", "lester", 30, false));
+        System.out.println();
 
-//        System.out.println("--- How Many ---");
-//        System.out.println(poem.writePoem("how-many.txt", "how", 50, false));
-//        System.out.println();
+        System.out.println("--- How Many ---");
+        System.out.println(poem.writePoem("how-many.txt", "how", 50, false));
+        System.out.println();
 
         testHashTable("zebra.txt");
         testUpdatedHashTable();

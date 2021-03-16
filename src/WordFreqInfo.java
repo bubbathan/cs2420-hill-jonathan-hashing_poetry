@@ -40,6 +40,17 @@ public class WordFreqInfo {
         return this.occurCount;
     }
 
+    public String getFollowWord(int count) {
+        ArrayList<String> followWordList = new ArrayList<>();
+        for (int i = 0; i < followList.size(); i++) {
+            Frequency frequency = followList.get(i);
+            for (int j = 0; j < frequency.getFollowCount(); j++) {
+                followWordList.add(frequency.getWord());
+            }
+        }
+        return followWordList.get(count);
+    }
+
     private class Frequency {
         String follow;
         int followCount;
@@ -57,6 +68,14 @@ public class WordFreqInfo {
         @Override
         public boolean equals(Object f2) {
             return this.follow.equals(((Frequency)f2).follow);
+        }
+
+        public String getWord() {
+            return this.follow;
+        }
+
+        public int getFollowCount() {
+            return this.followCount;
         }
     }
 }
