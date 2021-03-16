@@ -15,7 +15,7 @@
  * Note that all "matching" is based on the equals method.
  * @author Mark Allen Weiss (based on code from)
  */
-public class HashTable<K> {
+public class HashTable<K, V> {
     /**
      * Construct the hash table.
      */
@@ -40,7 +40,7 @@ public class HashTable<K> {
      *
      * @param key the item to insert.
      */
-    public boolean insert(K key) {
+    public boolean insert(K key, V value) {
         // Insert x as active
         int currentPos = findPos(key);
         // If we already have it in the hash table, update with the new value
@@ -48,7 +48,7 @@ public class HashTable<K> {
             return false;
         }
 
-        array[currentPos] = new HashEntry<>(key,  true);
+        array[currentPos] = new HashEntry<>(key, value, true);
         currentActiveEntries++;
 
         // Rehash; see Section 5.5
@@ -64,7 +64,7 @@ public class HashTable<K> {
         for (int i = 0; i < array.length && ct < limit; i++) {
             if (array[i] != null && array[i].isActive) {
                 //sb.append( i + ": " + array[i].key + "\n" );
-                sb.append(String.format("%d: %s\n", i, array[i].key));
+                sb.append(String.format("%d: %s[%s]\n", i, array[i].key, array[i].value));
                 ct++;
             }
         }
@@ -75,7 +75,7 @@ public class HashTable<K> {
      * Expand the hash table.
      */
     private void rehash() {
-        HashEntry<K>[] oldArray = array;
+        HashEntry<K, V>[] oldArray = array;
 
         // Create a new double-sized, empty table
         allocateArray(2 * oldArray.length);
@@ -85,7 +85,7 @@ public class HashTable<K> {
         // Copy table over
         for (var entry : oldArray) {
             if (entry != null && entry.isActive) {
-                insert(entry.key);
+                insert(entry.key, entry.value);
             }
         }
     }
@@ -163,12 +163,12 @@ public class HashTable<K> {
      * @param x the item to search for.
      * @return the matching item.
      */
-    public K find(K x) {
+    public V find(K x) {
         int currentPos = findPos(x);
         if (!isActive(currentPos)) {
             return null;
         } else {
-            return array[currentPos].key;
+            return array[currentPos].value;
         }
     }
 
@@ -205,19 +205,21 @@ public class HashTable<K> {
         return hashVal;
     }
 
-    private class HashEntry<K> {
+    private class HashEntry<K, V> {
         public K key;   // the element
+        public V value; // the WordFreqInfo
         public boolean isActive;  // false if marked deleted
 
-        public HashEntry(K key, boolean active) {
+        public HashEntry(K key, V value, boolean active) {
             this.key = key;
+            this.value = value;
             this.isActive = active;
         }
     }
 
     private static final int DEFAULT_TABLE_SIZE = 101;
 
-    private HashEntry<K>[] array; // The array of elements
+    private HashEntry<K, V>[] array; // The array of elements
     private int occupiedCount;         // The number of occupied cells: active or deleted
     private int currentActiveEntries;                  // Current size
 
